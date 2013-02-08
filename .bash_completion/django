@@ -1,0 +1,149 @@
+# #########################################################################
+# This bash script adds tab-completion feature to django-admin.py and
+# manage.py.
+#
+# Installation.
+#
+# Create a directory named .bash_completion in your home directory and move
+# this file there. Now, if in your home exists a file called .profile use this
+# one, otherwise use .bash_profile and add this line:
+#
+# source ~/.bash_completion/django
+#
+# Do the same in ~/.bashrc. Usually this shouldn't be necessary as
+# .profile or .bash_profile take care to invoke .bashrc, if it exists, but
+# different distributions handle this aspect differently.
+#
+# Settings will become effective since next login.
+#
+# Currently it is not supported models completion.
+#
+# Please, feedbacks or suggestions (expecially about models completion!) at
+# paolo@php3.it or at paolo on freenode or at http://code.djangoproject.com/ticket/1240. 
+# Thanks.
+ 
+_django_completion()
+{
+    local cur prev opts actions action_shell_opts
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+    # Standalone options.
+    opts="--help --settings --pythonpath"
+    # Actions.
+    actions="camqadm \
+celerybeat \
+celerycam \
+celeryctl \
+celeryd \
+celeryd_detach \
+celeryd_multi \
+celeryev \
+celerymon \
+changepassword \
+cleanup \
+clear \
+compilemessages \
+convert_to_south \
+createcachetable \
+createsuperuser \
+datamigration \
+dbshell \
+debugsqlshell \
+detailed_errors \
+diffsettings \
+djcelerymon \
+dump_data \
+dumpdata \
+flush \
+graphmigrations \
+inspectdb \
+load_geo \
+loaddata \
+makemessages \
+migrate \
+reset \
+retry_deferred \
+run_search_indexer \
+run_service \
+runfcgi \
+runserver \
+schemamigration \
+send_mail \
+setup_data \
+shell \
+solr \
+sql \
+sqlall \
+sqlclear \
+sqlcustom \
+sqlflush \
+sqlindexes \
+sqlinitialdata \
+sqlreset \
+sqlsequencereset \
+startapp \
+startmigration \
+syncdb \
+test \
+test_data \
+testserver \
+validate"
+    # Action's options.
+    action_shell_opts="--plain"
+
+    if [[ # django-admin.py, ./manage, manage.py 
+          ( ${COMP_CWORD} -eq 1 && 
+            ( ${COMP_WORDS[0]} == django-admin.py ||
+              ${COMP_WORDS[0]} == ./manage.py ||
+              ${COMP_WORDS[0]} == manage.py ) ) 
+          || 
+          # python manage.py, /some/path/python manage.py (if manage.py exists)
+          ( ${COMP_CWORD} -eq 2 && 
+            ( $( basename ${COMP_WORDS[0]} ) == python ) && 
+            ( $( basename ${COMP_WORDS[1]} ) == manage.py) &&
+            ( -r ${COMP_WORDS[1]} ) ) ]] ; then
+
+        case ${cur} in
+            -*)
+                COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+                return 0
+                ;;
+            *)
+                COMPREPLY=( $(compgen -W "${actions}" -- ${cur}) )
+                return 0
+                ;;
+        esac
+    else
+        case ${prev} in
+            adminindex|install|installperms| \
+            sql|sqlall|sqlclear|sqlindexes| \
+            sqlinitialdata|sqlreset|sqlsequencereset)
+            # Actually modelmodules completion is not supported.
+            # COMPREPLY=( $(compgen -W "auth core" -- ${cur}) )
+            COMPREPLY=()
+            return 0
+            ;;
+
+            createcachetable|createsuperuser|init| \
+            inspectdb|runserver|startapp|startproject| \
+            validate)
+                COMPREPLY=()
+                return 0
+                ;;
+            shell)
+                COMPREPLY=( $(compgen -W "$action_shell_opts" -- ${cur}) )
+                return 0
+                ;;
+            *)
+                #COMPREPLY=( $(compgen -W "auth core" -- ${cur}) )
+                COMPREPLY=()
+                return 0
+                ;;
+        esac
+    fi
+}
+
+complete -F _django_completion django-admin.py manage.py 
+complete -F _django_completion -o default python
