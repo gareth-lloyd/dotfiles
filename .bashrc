@@ -61,3 +61,7 @@ export NODE_PATH=/usr/local/lib/node_modules
 
 # Load sensitive information and local overrides
 source ~/.bashrc_local
+
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"

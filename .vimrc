@@ -15,6 +15,8 @@ Bundle 'gmarik/vundle'
 Bundle 'tpope/vim-fugitive'
 Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 Bundle 'kien/ctrlp.vim'
+Bundle 'Valloric/YouCompleteMe'
+Bundle 'groenewege/vim-less'
 " vim-scripts repos
 Bundle 'L9'
 Bundle 'vim-coffee-script'
@@ -180,6 +182,9 @@ if has("autocmd")
     autocmd FileType json setlocal softtabstop=2 shiftwidth=2 tabstop=4
     " Tell javascript files to use two spaces for indentation
     autocmd FileType javascript setlocal softtabstop=2 shiftwidth=2 tabstop=4
+    autocmd FileType html setlocal softtabstop=2 shiftwidth=2 tabstop=2
+    autocmd FileType htmldjango setlocal softtabstop=2 shiftwidth=2 tabstop=2
+    autocmd FileType css setlocal softtabstop=2 shiftwidth=2 tabstop=2
     " Tell coffeescript files to use two spaces for indentation
     autocmd FileType coffee setlocal softtabstop=2 shiftwidth=2 tabstop=4
     " Tell scala files to use two spaces for indentation
@@ -219,4 +224,6 @@ endif
 
 " change pyflakes highlight colour
 highlight SpellBad term=standout ctermfg=4
+
+set backspace=indent,eol,start
 
