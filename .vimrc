@@ -14,7 +14,7 @@ Plugin 'VundleVim/Vundle.vim'
 " original repos on github
 Plugin 'vim-syntastic/syntastic.git'
 Plugin 'tpope/vim-fugitive'
-Plugin 'tmhedberg/SimpylFold'
+" Plugin 'tmhedberg/SimpylFold'
 
 
 " non github repos
@@ -230,6 +230,7 @@ set backspace=indent,eol,start
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
+set statusline+=col:\ %c,
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_loc_list_height = 5
